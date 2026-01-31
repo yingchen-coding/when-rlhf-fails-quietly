@@ -492,6 +492,49 @@ Models that pass standard safety benchmarks but fail these criteria represent hi
 
 ---
 
+## Implications for Alignment Evaluation
+
+This work suggests a fundamental reframing of how alignment success is measured.
+
+**Current evaluation paradigms focus on**:
+- Refusal rates for harmful requests
+- Policy compliance scores
+- Toxicity and safety benchmark performance
+
+**These metrics systematically miss**:
+- Models that comply with epistemically unjustified requests
+- Outputs that appear cautious while exceeding justified confidence
+- Framing-dependent conclusions that shift with leading language
+- Fabricated methodology presented as rigorous analysis
+
+**The core problem**: A model that refuses 100% of harmful requests but provides false precision on 100% of uncertain questions is not aligned—it is compliant on the wrong axis.
+
+### Toward Epistemic Alignment Metrics
+
+We propose that production-grade alignment evaluation must include:
+
+| Dimension | Current State | Required |
+|-----------|---------------|----------|
+| **Harmful content** | Well-measured | Maintain |
+| **Policy compliance** | Well-measured | Maintain |
+| **Epistemic restraint** | Not measured | Add: forced quantification tests |
+| **Framing stability** | Not measured | Add: consistency under reframing |
+| **Assumption challenge** | Not measured | Add: leading prompt resistance |
+
+### The Central Claim
+
+> **Metrics that focus on refusal rates or surface-level safety compliance systematically underestimate epistemic risk in real-world deployments.**
+
+Epistemic compliance represents a category of failure that is:
+- **Invisible** to current safety monitoring
+- **Rewarded** by helpfulness optimization
+- **Compounding** in enterprise decision pipelines
+- **Undetectable** until downstream failures occur
+
+Alignment evaluation frameworks that do not account for epistemic reliability are incomplete—and may certify models as "safe" that pose systematic risks in high-stakes deployments.
+
+---
+
 ## References
 
 - Anthropic. (2024). Claude Model Card.
