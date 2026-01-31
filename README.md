@@ -196,3 +196,9 @@ The methodology and metrics are directly applicable to:
 ## License
 
 MIT
+
+---
+
+## Related Writing
+
+- [Why Single-Turn Safety Benchmarks Systematically Underestimate Agentic Risk](https://yingchen-coding.github.io/safety-memos/)
