@@ -220,9 +220,49 @@ If you reference this work in research or evaluation pipelines:
 ## Contact
 
 Ying Chen, Ph.D.
-blueoceanally@gmail.com
+yingchen.for.upload@gmail.com
 
 LinkedIn: https://www.linkedin.com/in/ying-chen-8b25a730/
+
+---
+
+## Completeness & Limitations
+
+### What This Project Does Well
+- Systematic failure taxonomy (epistemic compliance, intent drift, reward hacking)
+- Counterfactual ablations for causal attribution
+- Trajectory-level metrics beyond single-turn evaluation
+- Multi-backend reproducibility
+
+### Known Limitations
+
+**External Validity Gap**
+- Scenarios are synthetic adversarial constructions
+- Mapping to real-world production incidents is incomplete
+- Future work: incident-derived scenario generation
+
+**Causal Attribution Boundaries**
+- We attribute failures to "RLHF mechanisms" but cannot fully disentangle:
+  - Reward model specification errors
+  - Training data distribution issues
+  - Base model capabilities
+- Instrumental variables are not available for clean causal inference
+
+**Reproducibility Constraints**
+- Results depend on specific model versions and API behavior
+- Closed-source models may change without notice
+- Open-source models provide better reproducibility
+
+**Coverage Gaps**
+- Multi-agent coordination failures not yet covered
+- Tool-use chains with external state not fully modeled
+- Real-time streaming evaluation requires additional engineering
+
+### Honest Assessment
+This project demonstrates failure modes exist and provides systematic evaluation tools. It does not claim to:
+- Exhaustively cover all alignment failure modes
+- Provide production-ready monitoring systems
+- Establish definitive causal mechanisms
 
 ---
 
