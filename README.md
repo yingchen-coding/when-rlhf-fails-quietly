@@ -228,41 +228,26 @@ LinkedIn: https://www.linkedin.com/in/ying-chen-8b25a730/
 
 ## Completeness & Limitations
 
-### What This Project Does Well
-- Systematic failure taxonomy (epistemic compliance, intent drift, reward hacking)
-- Counterfactual ablations for causal attribution
-- Trajectory-level metrics beyond single-turn evaluation
-- Multi-backend reproducibility
+This repository is intended as a diagnostic and research prototype for understanding trajectory-level misalignment in RLHF-trained models. It is designed to surface failure modes that are systematically under-measured by single-turn benchmarks, including epistemic compliance, intent drift, and reward hacking in long-horizon tasks.
 
-### Known Limitations
+**What is complete:**
+- A concrete failure taxonomy grounded in trajectory-level behaviors rather than per-turn policy violations.
+- Multi-backend evaluation support to compare failure patterns across different model providers.
+- Counterfactual ablations (e.g., memory window size, single-turn vs. multi-turn evaluation) to isolate the contribution of long-horizon dynamics.
+- Reproducible evaluation harness for controlled experiments.
 
-**External Validity Gap**
-- Scenarios are synthetic adversarial constructions
-- Mapping to real-world production incidents is incomplete
-- Future work: incident-derived scenario generation
+**Key limitations:**
+- **External validity:** Most scenarios are synthetic and adversarially constructed. While they are inspired by real-world deployment failures, they do not yet constitute a representative sample of production traffic or user behavior.
+- **Causal attribution:** Observed failures are correlated with RLHF-style training and prompt-based safeguards, but the repository does not provide strong causal identification of which training components are responsible. Results should be interpreted as empirical evidence of failure modes, not definitive causal claims.
+- **Coverage:** The current taxonomy is not exhaustive. New classes of misalignment may emerge as model capabilities, tool access, and deployment contexts evolve.
+- **Production readiness:** This repo is not a drop-in evaluation framework for production gating. It is intended to inform benchmark design, safeguard placement, and regression testing strategies downstream.
 
-**Causal Attribution Boundaries**
-- We attribute failures to "RLHF mechanisms" but cannot fully disentangle:
-  - Reward model specification errors
-  - Training data distribution issues
-  - Base model capabilities
-- Instrumental variables are not available for clean causal inference
+**Future work:**
+- Integrating replayed production incidents to improve external validity.
+- Expanding causal ablations across training pipelines and reward model variants.
+- Automating scenario generation to reduce overfitting to a fixed failure set.
 
-**Reproducibility Constraints**
-- Results depend on specific model versions and API behavior
-- Closed-source models may change without notice
-- Open-source models provide better reproducibility
-
-**Coverage Gaps**
-- Multi-agent coordination failures not yet covered
-- Tool-use chains with external state not fully modeled
-- Real-time streaming evaluation requires additional engineering
-
-### Honest Assessment
-This project demonstrates failure modes exist and provides systematic evaluation tools. It does not claim to:
-- Exhaustively cover all alignment failure modes
-- Provide production-ready monitoring systems
-- Establish definitive causal mechanisms
+This project is part of a larger closed-loop safety system. See the portfolio overview for how this component integrates with benchmarks, safeguards, stress tests, release gating, and incident-driven regression.
 
 ---
 
