@@ -101,6 +101,49 @@ These findings are directly relevant to alignment, red-teaming, and safeguards e
 
 ---
 
+## Reproducibility and Severity Calibration
+
+This repository provides a one-command reproduction harness for all reported failure cases. Each case can be replayed deterministically with fixed seeds, backend configuration, and model versions.
+
+In addition to qualitative failure analysis, we provide a calibrated severity rubric to quantify the operational risk of each failure. Severity levels are mapped to downstream release-gating decisions (OK / WARN / BLOCK) to ensure consistency between research findings and production safety policy.
+
+### Counterfactual Controls
+
+To isolate causal mechanisms behind observed failures, we provide counterfactual ablations including:
+- No agent loop (single-turn baseline)
+- Shortened memory windows
+- Alternative reward models
+
+These controls help distinguish agentic failure modes from prompt artifacts or backend-specific quirks.
+
+---
+
+## 5-Minute Demo Walkthrough
+
+This demo reproduces a real trajectory-level alignment failure and shows how single-turn benchmarks fail to detect it.
+
+### Step 1: Reproduce a Failure Case
+```bash
+python demos/run_failure_case.py --case intent_drift_01 --model claude-3 --seed 42
+```
+
+### Step 2: Compare Single-Turn vs Trajectory Metrics
+```bash
+python demos/compare_single_turn_vs_trajectory.py --case intent_drift_01 --model claude-3
+```
+
+### Step 3: Counterfactual Ablation
+```bash
+python demos/run_counterfactuals.py --case intent_drift_01 --ablation all
+```
+
+Expected outcome:
+- Single-turn metrics show no violation.
+- Trajectory-level divergence flags a policy breach.
+- Counterfactual ablations localize the failure to agent memory accumulation.
+
+---
+
 ## How to Use
 
 ```bash
