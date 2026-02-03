@@ -17,6 +17,8 @@ Systematically characterizing how RLHF-trained models **violate safety intent wi
 - Run production evaluation pipelines (that's [scalable-safeguards-eval-pipeline](https://github.com/yingchen-coding/scalable-safeguards-eval-pipeline))
 - Make release gating decisions (that's [model-safety-regression-suite](https://github.com/yingchen-coding/model-safety-regression-suite))
 
+> **Boundary Statement**: This repository studies RLHF failure mechanisms. Findings are **explanatory research** and are **not suitable as release criteria**. Final safety decisions live exclusively in [model-safety-regression-suite](https://github.com/yingchen-coding/model-safety-regression-suite).
+
 ---
 
 ## Why RLHF Alone Is Insufficient
