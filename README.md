@@ -366,6 +366,8 @@ when-rlhf-fails-quietly/
 ├── analysis/                    # Causal analysis modules
 │   ├── causal_mechanisms.py     # RLHF artifact → failure mapping
 │   └── silent_failure_rate.py   # Silent failure metrics
+├── protocols/                   # Reproducibility protocols
+│   └── eval_protocol_v1.md      # Standardized evaluation methodology
 ├── scenarios/                   # Adversarial scenario generators
 │   ├── epistemic_compliance.py
 │   ├── intent_drift.py
