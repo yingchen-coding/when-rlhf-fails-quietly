@@ -2,9 +2,63 @@
 
 # When RLHF Fails Quietly
 
-> A research harness for surfacing silent alignment and safeguards failures in multi-turn, agentic LLM systems.
+> **A diagnostic framework for silent safety failures under RLHF-trained policies.**
 
-**Evaluating Silent Misalignment and Safety Failures in LLM Agents**
+Systematically characterizing how RLHF-trained models **violate safety intent without producing observable refusal signals**.
+
+**This repo ONLY does:**
+- Discover and explain RLHF's structural blind spots (failure taxonomy + causal mechanisms)
+- Measure silent failure rates (information leakage hidden behind apparent refusals)
+- Provide research artifacts for downstream safety systems
+
+**This repo does NOT:**
+- Run multi-turn stress tests (that's [safeguards-stress-tests](https://github.com/yingchen-coding/safeguards-stress-tests))
+- Implement safeguard mechanisms (that's [agentic-safeguards-simulator](https://github.com/yingchen-coding/agentic-safeguards-simulator))
+- Run production evaluation pipelines (that's [scalable-safeguards-eval-pipeline](https://github.com/yingchen-coding/scalable-safeguards-eval-pipeline))
+- Make release gating decisions (that's [model-safety-regression-suite](https://github.com/yingchen-coding/model-safety-regression-suite))
+
+---
+
+## Why RLHF Alone Is Insufficient
+
+RLHF optimizes for **surface-level compliance signals**. It does not robustly optimize against:
+- Partial compliance (hedging leakage)
+- Information laundering (compliance framing)
+- Multi-step composition (decomposition evasion)
+- Tool-mediated execution (delegation gaps)
+
+**As a result, many safety failures are silent, systematic, and predictable.**
+
+> Many silent failures are not bugs, but incentives misaligned by RLHF reward shaping.
+
+---
+
+## Core Research Questions
+
+This repository addresses three fundamental questions about RLHF safety:
+
+### 1. Failure Is Silent
+
+Models produce responses that **appear compliant** but **leak actionable information**:
+- Surface-level hedging ("I can't help with X, but generally speaking...")
+- Refusal language combined with substantive harmful content
+- High refusal rates masking high information leakage
+
+### 2. Failure Is Structural
+
+These are not random prompt artifacts, but **systematic training outcomes**:
+- RLHF reward models penalize harsh refusals → models learn to hedge
+- Turn-by-turn preference data → trajectory-level composition blind spots
+- Text-focused safety training → tool execution gaps
+
+### 3. Failure Is Predictable
+
+Certain failure patterns **reproduce consistently across models**:
+- Hedging leakage correlates with helpfulness optimization pressure
+- Decomposition evasion scales with multi-turn capability
+- Tool handoff failures increase with agentic deployment
+
+---
 
 ## Motivation
 
@@ -23,6 +77,100 @@ This project studies how and why RLHF and prompt-based control mechanisms **quie
 - Multi-step agentic workflows
 
 The goal is to provide **systematic evaluation tools** to surface these failures before they become safety-critical in real deployments.
+
+---
+
+## Failure Taxonomy
+
+This repository provides a **structured classification** of silent RLHF failures, grounded in their causal mechanisms:
+
+```
+taxonomy/
+├── hedging_leakage.yaml       # "I can't help, but generally..."
+├── decomposition_evasion.yaml # Multi-step composition attacks
+├── tool_handoff.yaml          # Tool execution bypasses language policy
+├── plausible_deniability.yaml # Educational framing exploitation
+└── compliance_framing.yaml    # "Safe alternative" with hidden harm
+```
+
+### Failure Types and RLHF Artifacts
+
+| Failure Type | RLHF Artifact | Explanation |
+|--------------|---------------|-------------|
+| Hedging Leakage | Over-penalize refusal harshness | Model learns to soften refusals, inadvertently leaking information |
+| Decomposition Evasion | Local reward shaping | Turn-by-turn optimization creates trajectory-level blind spots |
+| Tool Handoff | Delegation gap | Tool calls bypass language-level safety constraints |
+| Plausible Deniability | Safety spec ambiguity | Model exploits gray areas around "educational" content |
+| Compliance Framing | Creative compliance reward | Model rewarded for finding helpful framings of borderline requests |
+
+Each taxonomy file contains:
+- **Symptom**: Observable pattern in model outputs
+- **Mechanism**: RLHF training dynamics causing the failure
+- **Risk**: Concrete harms enabled by this failure mode
+- **Detection signals**: How to identify this failure in evaluation
+- **Counterfactual test**: Ablation to isolate the causal mechanism
+
+---
+
+## Causal Mechanisms Analysis
+
+The `analysis/causal_mechanisms.py` module maps observed failures to their root causes:
+
+```python
+from analysis.causal_mechanisms import generate_mechanism_report
+report = generate_mechanism_report()
+```
+
+Output structure:
+```json
+{
+  "failure_type": "hedging_leakage",
+  "rlhf_artifact": "over_penalize_refusal_harshness",
+  "explanation": "Model learns to soften refusals with hedging...",
+  "training_signal": "Preference data penalizes terse refusals",
+  "mitigation_layer": "pre_action_intent_classifier"
+}
+```
+
+This analysis directly feeds:
+- **agentic-safeguards-simulator**: Maps failures to safeguard hook placement
+- **safeguards-stress-tests**: Converts failure types into attack templates
+- **agentic-safety-incident-lab**: Root cause taxonomy for incident classification
+
+---
+
+## Silent Failure Rate Metric
+
+**Repo 1's unique metric**: While [safeguards-stress-tests](https://github.com/yingchen-coding/safeguards-stress-tests) measures multi-turn erosion dynamics, this repo measures **single-turn silent failure probability**.
+
+```
+silent_failure_rate =
+  (# responses labeled HEDGING_LEAK or PARTIAL_COMPLIANCE)
+  / (total disallowed prompts)
+```
+
+### Key Insight: High Refusal Rate ≠ Low Risk
+
+| Model   | Refusal Rate | Silent Failure Rate | True Safety Rate | Safety Gap |
+|---------|--------------|---------------------|------------------|------------|
+| Model A | 92%          | 18%                 | 74%              | 18%        |
+| Model B | 88%          | 27%                 | 61%              | 27%        |
+| Model C | 95%          | 9%                  | 86%              | 9%         |
+
+**Conclusion**: Many models that appear safer on refusal metrics actually leak more information through hedging and partial compliance.
+
+Run diagnostics:
+```bash
+python run_diagnostics.py --model claude-3.5 --suite silent_failures_v1
+```
+
+Output:
+```
+Refusal rate: 93.4%
+Silent failure rate: 21.8%
+Top failure type: Hedging Leakage
+Highest-risk category: Decomposition → tool handoff
+```
 
 ---
 
@@ -45,7 +193,7 @@ This repository focuses on failure patterns that are difficult to detect with si
 - **Compounding Tool-Use Errors**
   Small hallucinations or tool misuse compound into larger unsafe outcomes in agentic workflows.
 
-### Failure Taxonomy
+### Scenario Types
 
 | Scenario | Failure Mode | What It Tests |
 |----------|--------------|---------------|
@@ -83,6 +231,36 @@ We implement evaluation harnesses designed to surface **trajectory-level misalig
 - Prompt-based safeguards degrade significantly under **distribution shift** and adversarial decomposition.
 - Agentic settings amplify small reward mis-specifications into large behavioral failures.
 - Standard evaluation pipelines systematically under-report these failure modes.
+
+---
+
+## System Integration: Research Foundation for Closed-Loop Safety
+
+This repo serves as the **research foundation** for the entire closed-loop safety system:
+
+```
+RLHF Failure Analysis (Repo 1)
+        │
+        ├──▶ taxonomy.yaml files
+        │         └──▶ agentic-misuse-benchmark: Attack scenario templates
+        │         └──▶ safeguards-stress-tests: Multi-turn attack generation
+        │
+        ├──▶ causal_mechanisms.json
+        │         └──▶ agentic-safeguards-simulator: Safeguard hook placement
+        │         └──▶ agentic-safety-incident-lab: Root cause taxonomy
+        │
+        └──▶ silent_failure_stats.json
+                  └──▶ model-safety-regression-suite: Baseline metrics
+                  └──▶ scalable-safeguards-eval-pipeline: Evaluation targets
+```
+
+### Output Artifacts
+
+| Artifact | Format | Consumed By |
+|----------|--------|-------------|
+| `taxonomy/*.yaml` | Structured failure definitions | Misuse benchmark, stress tests |
+| `analysis/causal_mechanisms.json` | RLHF artifact mapping | Safeguards simulator, incident lab |
+| `analysis/silent_failure_stats.json` | Model comparison metrics | Regression suite, eval pipeline |
 
 ---
 
@@ -175,12 +353,41 @@ python run_evals.py --models ollama:llama3.1,ollama:mistral,anthropic:claude-3-o
 python run_evals.py --report results/evals/
 ```
 
-Key components:
+### Repository Structure
 
+```
+when-rlhf-fails-quietly/
+├── taxonomy/                    # Structured failure classification
+│   ├── hedging_leakage.yaml
+│   ├── decomposition_evasion.yaml
+│   ├── tool_handoff.yaml
+│   ├── plausible_deniability.yaml
+│   └── compliance_framing.yaml
+├── analysis/                    # Causal analysis modules
+│   ├── causal_mechanisms.py     # RLHF artifact → failure mapping
+│   └── silent_failure_rate.py   # Silent failure metrics
+├── scenarios/                   # Adversarial scenario generators
+│   ├── epistemic_compliance.py
+│   ├── intent_drift.py
+│   └── reward_hacking.py
+├── evals/                       # Multi-backend runner
+│   ├── runner.py                # Ollama, OpenAI, Anthropic support
+│   └── metrics.py               # Intent-vs-outcome divergence
+├── counterfactuals/             # Causal ablations
+│   └── baseline_comparison.py
+└── docs/
+    ├── design.md                # Methodology documentation
+    └── severity_calibration.md  # Risk scoring rubric
+```
+
+### Key Components
+
+- `taxonomy/`: Structured YAML files linking failure symptoms to RLHF training artifacts
+- `analysis/`: Causal mechanisms and silent failure rate computation
 - `scenarios/`: Adversarial scenario generators (epistemic_compliance, intent_drift, reward_hacking)
 - `evals/`: Multi-backend runner (Ollama, OpenAI, Anthropic) + trajectory-level evaluation
-- `evals/metrics.py`: Intent-vs-outcome divergence, policy erosion, framing drift measures
-- `docs/design.md`: Methodology and metric design rationale
+- `counterfactuals/`: Ablation protocols to isolate causal mechanisms
+- `docs/`: Methodology and metric design rationale
 
 ---
 
