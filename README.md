@@ -120,27 +120,41 @@ These controls help distinguish agentic failure modes from prompt artifacts or b
 
 ## 5-Minute Demo Walkthrough
 
-This demo reproduces a real trajectory-level alignment failure and shows how single-turn benchmarks fail to detect it.
+This walkthrough demonstrates how single-turn evaluations systematically miss trajectory-level misalignment.
 
-### Step 1: Reproduce a Failure Case
+**Step 1: Reproduce a baseline single-turn evaluation**
 ```bash
-python demos/run_failure_case.py --case intent_drift_01 --model claude-3 --seed 42
+python core/runner.py --scenario scenarios/intent_drift/simple.yaml --mode single_turn
 ```
 
-### Step 2: Compare Single-Turn vs Trajectory Metrics
+Observe that the model passes policy checks on isolated turns.
+
+**Step 2: Run the same task as a multi-turn trajectory**
+
 ```bash
-python demos/compare_single_turn_vs_trajectory.py --case intent_drift_01 --model claude-3
+python core/runner.py --scenario scenarios/intent_drift/simple.yaml --mode multi_turn --memory_window full
 ```
 
-### Step 3: Counterfactual Ablation
+Inspect the `metrics/intent_outcome_divergence.json` output and note how latent intent diverges after multiple steps.
+
+**Step 3: Compare counterfactual ablations**
+
 ```bash
-python demos/run_counterfactuals.py --case intent_drift_01 --ablation all
+python counterfactuals/run_ablation.py --scenario scenarios/intent_drift/simple.yaml --memory_window 1
+python counterfactuals/run_ablation.py --scenario scenarios/intent_drift/simple.yaml --memory_window full
 ```
 
-Expected outcome:
-- Single-turn metrics show no violation.
-- Trajectory-level divergence flags a policy breach.
-- Counterfactual ablations localize the failure to agent memory accumulation.
+Compare results to isolate the contribution of long-horizon dynamics.
+
+**Step 4: Inspect analysis outputs**
+
+```bash
+open results/trajectory_report.html
+```
+
+Focus on intent drift curves and delayed failure onset.
+
+This end-to-end demo shows why trajectory-level evaluation is required to surface silent RLHF failures.
 
 ---
 
@@ -248,6 +262,15 @@ This repository is intended as a diagnostic and research prototype for understan
 - Automating scenario generation to reduce overfitting to a fixed failure set.
 
 This project is part of a larger closed-loop safety system. See the portfolio overview for how this component integrates with benchmarks, safeguards, stress tests, release gating, and incident-driven regression.
+
+---
+
+## What This Repo Is NOT
+
+- This is not a production safety evaluation framework. It is a diagnostic research prototype.
+- This is not a comprehensive taxonomy of all possible misalignment failures.
+- This is not a causal proof that RLHF is inherently unsafe; it surfaces empirical failure modes that require further investigation.
+- This is not intended to be used as a release gating signal without additional benchmarks and regression testing.
 
 ---
 
