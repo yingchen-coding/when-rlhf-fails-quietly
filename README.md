@@ -304,7 +304,7 @@ This walkthrough demonstrates how single-turn evaluations systematically miss tr
 
 **Step 1: Reproduce a baseline single-turn evaluation**
 ```bash
-python core/runner.py --scenario scenarios/intent_drift/simple.yaml --mode single_turn
+python run_evals.py --scenario intent_drift --mode single_turn
 ```
 
 Observe that the model passes policy checks on isolated turns.
@@ -312,16 +312,16 @@ Observe that the model passes policy checks on isolated turns.
 **Step 2: Run the same task as a multi-turn trajectory**
 
 ```bash
-python core/runner.py --scenario scenarios/intent_drift/simple.yaml --mode multi_turn --memory_window full
+python run_evals.py --scenario intent_drift --mode multi_turn --trajectory
 ```
 
-Inspect the `metrics/intent_outcome_divergence.json` output and note how latent intent diverges after multiple steps.
+Inspect the output metrics and note how latent intent diverges after multiple steps.
 
 **Step 3: Compare counterfactual ablations**
 
 ```bash
-python counterfactuals/run_ablation.py --scenario scenarios/intent_drift/simple.yaml --memory_window 1
-python counterfactuals/run_ablation.py --scenario scenarios/intent_drift/simple.yaml --memory_window full
+python counterfactuals/baseline_comparison.py --scenario intent_drift --memory_window 1
+python counterfactuals/baseline_comparison.py --scenario intent_drift --memory_window full
 ```
 
 Compare results to isolate the contribution of long-horizon dynamics.
@@ -329,7 +329,7 @@ Compare results to isolate the contribution of long-horizon dynamics.
 **Step 4: Inspect analysis outputs**
 
 ```bash
-open results/trajectory_report.html
+python analysis/silent_failure_rate.py --scenario intent_drift
 ```
 
 Focus on intent drift curves and delayed failure onset.
