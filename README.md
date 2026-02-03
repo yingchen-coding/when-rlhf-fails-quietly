@@ -243,15 +243,15 @@ This repo serves as the **research foundation** for the entire closed-loop safet
 ```
 RLHF Failure Analysis (Repo 1)
         │
-        ├──▶ taxonomy.yaml files
+        ├──▶ taxonomy/*.yaml (committed)
         │         └──▶ agentic-misuse-benchmark: Attack scenario templates
         │         └──▶ safeguards-stress-tests: Multi-turn attack generation
         │
-        ├──▶ causal_mechanisms.json
+        ├──▶ analysis/causal_mechanisms.py (run to generate)
         │         └──▶ agentic-safeguards-simulator: Safeguard hook placement
         │         └──▶ agentic-safety-incident-lab: Root cause taxonomy
         │
-        └──▶ silent_failure_stats.json
+        └──▶ analysis/silent_failure_rate.py (run to generate)
                   └──▶ model-safety-regression-suite: Baseline metrics
                   └──▶ scalable-safeguards-eval-pipeline: Evaluation targets
 ```
@@ -261,8 +261,8 @@ RLHF Failure Analysis (Repo 1)
 | Artifact | Format | Consumed By |
 |----------|--------|-------------|
 | `taxonomy/*.yaml` | Structured failure definitions | Misuse benchmark, stress tests |
-| `analysis/causal_mechanisms.json` | RLHF artifact mapping | Safeguards simulator, incident lab |
-| `analysis/silent_failure_stats.json` | Model comparison metrics | Regression suite, eval pipeline |
+| `analysis/causal_mechanisms.py` | RLHF artifact mapping (run to generate JSON) | Safeguards simulator, incident lab |
+| `analysis/silent_failure_rate.py` | Model comparison metrics (run to generate JSON) | Regression suite, eval pipeline |
 
 ---
 
