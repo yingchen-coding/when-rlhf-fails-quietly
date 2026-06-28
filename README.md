@@ -2,6 +2,8 @@
 
 # When RLHF Fails Quietly
 
+[![CI](https://github.com/yingchen-coding/when-rlhf-fails-quietly/actions/workflows/ci.yml/badge.svg)](https://github.com/yingchen-coding/when-rlhf-fails-quietly/actions/workflows/ci.yml)
+
 > **A diagnostic framework for silent safety failures under RLHF-trained policies.**
 
 Systematically characterizing how RLHF-trained models **violate safety intent without producing observable refusal signals**.
