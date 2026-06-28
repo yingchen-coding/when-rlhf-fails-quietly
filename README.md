@@ -1,4 +1,4 @@
-> **Portfolio**: [Safety Memo](https://yingchen-coding.github.io/safety-memos/) · [when-rlhf-fails-quietly](https://github.com/yingchen-coding/when-rlhf-fails-quietly) · [agentic-misuse-benchmark](https://github.com/yingchen-coding/agentic-misuse-benchmark) · [agentic-safeguards-simulator](https://github.com/yingchen-coding/agentic-safeguards-simulator) · [safeguards-stress-tests](https://github.com/yingchen-coding/safeguards-stress-tests) · [scalable-safeguards-eval-pipeline](https://github.com/yingchen-coding/scalable-safeguards-eval-pipeline) · [model-safety-regression-suite](https://github.com/yingchen-coding/model-safety-regression-suite) · [agentic-safety-incident-lab](https://github.com/yingchen-coding/agentic-safety-incident-lab)
+> **Portfolio**: [Safety Memo](https://yingchen-coding.github.io/safety-memos/) · [when-rlhf-fails-quietly](https://github.com/yingchen-coding/when-rlhf-fails-quietly) · [agentic-misuse-benchmark](https://github.com/yingchen-coding/agentic-misuse-benchmark) · [safety-harness/simulator](https://github.com/yingchen-coding/safety-harness/tree/main/simulator) · [safety-harness/stress-testing](https://github.com/yingchen-coding/safety-harness/tree/main/stress-testing) · [safety-harness/release-gate](https://github.com/yingchen-coding/safety-harness/tree/main/release-gate) · [safety-harness/regression-suite](https://github.com/yingchen-coding/safety-harness/tree/main/regression-suite) · [safety-harness/incident-lab](https://github.com/yingchen-coding/safety-harness/tree/main/incident-lab)
 
 # When RLHF Fails Quietly
 
@@ -12,12 +12,12 @@ Systematically characterizing how RLHF-trained models **violate safety intent wi
 - Provide research artifacts for downstream safety systems
 
 **This repo does NOT:**
-- Run multi-turn stress tests (that's [safeguards-stress-tests](https://github.com/yingchen-coding/safeguards-stress-tests))
-- Implement safeguard mechanisms (that's [agentic-safeguards-simulator](https://github.com/yingchen-coding/agentic-safeguards-simulator))
-- Run production evaluation pipelines (that's [scalable-safeguards-eval-pipeline](https://github.com/yingchen-coding/scalable-safeguards-eval-pipeline))
-- Make release gating decisions (that's [model-safety-regression-suite](https://github.com/yingchen-coding/model-safety-regression-suite))
+- Run multi-turn stress tests (that's [safety-harness/stress-testing](https://github.com/yingchen-coding/safety-harness/tree/main/stress-testing))
+- Implement safeguard mechanisms (that's [safety-harness/simulator](https://github.com/yingchen-coding/safety-harness/tree/main/simulator))
+- Run production evaluation pipelines (that's [safety-harness/release-gate](https://github.com/yingchen-coding/safety-harness/tree/main/release-gate))
+- Make release gating decisions (that's [safety-harness/regression-suite](https://github.com/yingchen-coding/safety-harness/tree/main/regression-suite))
 
-> **Boundary Statement**: This repository studies RLHF failure mechanisms. Findings are **explanatory research** and are **not suitable as release criteria**. Final safety decisions live exclusively in [model-safety-regression-suite](https://github.com/yingchen-coding/model-safety-regression-suite).
+> **Boundary Statement**: This repository studies RLHF failure mechanisms. Findings are **explanatory research** and are **not suitable as release criteria**. Final safety decisions live exclusively in [safety-harness/regression-suite](https://github.com/yingchen-coding/safety-harness/tree/main/regression-suite).
 
 ---
 
@@ -135,15 +135,15 @@ Output structure:
 ```
 
 This analysis directly feeds:
-- **agentic-safeguards-simulator**: Maps failures to safeguard hook placement
-- **safeguards-stress-tests**: Converts failure types into attack templates
-- **agentic-safety-incident-lab**: Root cause taxonomy for incident classification
+- **safety-harness/simulator**: Maps failures to safeguard hook placement
+- **safety-harness/stress-testing**: Converts failure types into attack templates
+- **safety-harness/incident-lab**: Root cause taxonomy for incident classification
 
 ---
 
 ## Silent Failure Rate Metric
 
-**Repo 1's unique metric**: While [safeguards-stress-tests](https://github.com/yingchen-coding/safeguards-stress-tests) measures multi-turn erosion dynamics, this repo measures **single-turn silent failure probability**.
+**Repo 1's unique metric**: While [safety-harness/stress-testing](https://github.com/yingchen-coding/safety-harness/tree/main/stress-testing) measures multi-turn erosion dynamics, this repo measures **single-turn silent failure probability**.
 
 ```
 silent_failure_rate =
@@ -245,15 +245,15 @@ RLHF Failure Analysis (Repo 1)
         │
         ├──▶ taxonomy/*.yaml (committed)
         │         └──▶ agentic-misuse-benchmark: Attack scenario templates
-        │         └──▶ safeguards-stress-tests: Multi-turn attack generation
+        │         └──▶ safety-harness/stress-testing: Multi-turn attack generation
         │
         ├──▶ analysis/causal_mechanisms.py (run to generate)
-        │         └──▶ agentic-safeguards-simulator: Safeguard hook placement
-        │         └──▶ agentic-safety-incident-lab: Root cause taxonomy
+        │         └──▶ safety-harness/simulator: Safeguard hook placement
+        │         └──▶ safety-harness/incident-lab: Root cause taxonomy
         │
         └──▶ analysis/silent_failure_rate.py (run to generate)
-                  └──▶ model-safety-regression-suite: Baseline metrics
-                  └──▶ scalable-safeguards-eval-pipeline: Evaluation targets
+                  └──▶ safety-harness/regression-suite: Baseline metrics
+                  └──▶ safety-harness/release-gate: Evaluation targets
 ```
 
 ### Output Artifacts
