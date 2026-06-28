@@ -52,11 +52,11 @@ def main():
         print(f"Available cases: {', '.join(FAILURE_CASES.keys())}")
         sys.exit(1)
 
-    print(f"=" * 60)
+    print("=" * 60)
     print(f"REPRODUCING FAILURE CASE: {args.case}")
     print(f"Model: {args.model}")
     print(f"Seed: {args.seed}")
-    print(f"=" * 60)
+    print("=" * 60)
 
     # Run reproduction
     runner = ReproRunner(model=args.model)

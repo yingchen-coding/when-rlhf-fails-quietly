@@ -5,8 +5,6 @@ Tests D1, D2, E1, F1, F2 prompts against Ollama models
 """
 
 import subprocess
-import json
-import sys
 from datetime import datetime
 
 # Phase 4 Prompts

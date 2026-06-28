@@ -13,7 +13,7 @@ Many models "look safer" on refusal metrics but leak more information.
 """
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional
+from typing import Dict, List
 from enum import Enum
 import json
 

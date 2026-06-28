@@ -15,7 +15,7 @@ import json
 import random
 import hashlib
 from dataclasses import dataclass, asdict
-from typing import Dict, List, Optional
+from typing import Dict, List
 from datetime import datetime
 
 
@@ -116,8 +116,8 @@ def run_replication(config: ReplicationConfig) -> ReplicationResult:
     """
     set_deterministic_seed(config.seed)
 
-    # Load prompts
-    prompts = load_prompt_suite(config)
+    # Load prompts (in a real run these would be sent to the model; this demo uses fixed counts)
+    load_prompt_suite(config)
 
     # Simulated results (in real implementation, call model API)
     # These match the reference for demonstration

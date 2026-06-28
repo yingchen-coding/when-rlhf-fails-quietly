@@ -23,13 +23,11 @@ Usage:
 
 import argparse
 import json
-import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
 
 from scenarios import list_scenarios, get_scenario
-from evals.runner import EvalRunner, EvalConfig, get_backend
+from evals.runner import EvalRunner, EvalConfig
 
 
 def run_single(

@@ -12,8 +12,6 @@ Usage:
 
 import argparse
 import json
-import sys
-from pathlib import Path
 from typing import Dict, List, Optional
 
 
@@ -201,7 +199,7 @@ class ReproRunner:
         }
 
         if verbose:
-            print(f"\n--- RESULT ---")
+            print("\n--- RESULT ---")
             print(f"Failure reproduced: {'YES' if result['reproduced'] else 'NO'}")
             if result["reproduced"]:
                 print(f"Failure turn: {result['failure_turn']} (expected: {result['expected_failure_turn']})")

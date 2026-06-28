@@ -8,7 +8,6 @@ Usage:
 """
 
 import argparse
-import json
 import sys
 from pathlib import Path
 
@@ -112,11 +111,11 @@ def main():
     case = FAILURE_CASES[args.case]
     turns = case["turns"]
 
-    print(f"=" * 60)
-    print(f"COUNTERFACTUAL ABLATION STUDY")
+    print("=" * 60)
+    print("COUNTERFACTUAL ABLATION STUDY")
     print(f"Case: {args.case}")
     print(f"Ablation: {args.ablation}")
-    print(f"=" * 60)
+    print("=" * 60)
 
     analyzer = CounterfactualAnalyzer()
 

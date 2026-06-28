@@ -1,0 +1,2 @@
+# Notebooks are exploratory analysis, not shipped code — don't lint them.
+extend-exclude = ["*.ipynb"]

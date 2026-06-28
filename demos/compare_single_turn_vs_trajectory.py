@@ -9,7 +9,6 @@ Usage:
 """
 
 import argparse
-import json
 import sys
 from pathlib import Path
 
@@ -18,7 +17,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from repro import FAILURE_CASES
 from counterfactuals.baseline_comparison import (
     CounterfactualAnalyzer,
-    CounterfactualResult,
     BaselineType
 )
 
@@ -76,12 +74,12 @@ def main():
     case = FAILURE_CASES[args.case]
     turns = case["turns"]
 
-    print(f"=" * 60)
-    print(f"COMPARING SINGLE-TURN VS TRAJECTORY METRICS")
+    print("=" * 60)
+    print("COMPARING SINGLE-TURN VS TRAJECTORY METRICS")
     print(f"Case: {args.case}")
     print(f"Turns: {len(turns)}")
     print(f"Samples: {args.samples} per condition")
-    print(f"=" * 60)
+    print("=" * 60)
 
     analyzer = CounterfactualAnalyzer()
 
@@ -113,16 +111,16 @@ def main():
     print("RESULTS")
     print(f"{'=' * 60}")
 
-    print(f"\n--- Single-Turn Baseline ---")
+    print("\n--- Single-Turn Baseline ---")
     print(f"Failure Rate: {single_result.failure_rate:.1%}")
     print(f"Sample Size: {single_result.sample_size}")
 
-    print(f"\n--- Full Trajectory ---")
+    print("\n--- Full Trajectory ---")
     print(f"Failure Rate: {trajectory_result.failure_rate:.1%}")
     print(f"Avg Failure Turn: {trajectory_result.avg_failure_turn or 'N/A'}")
     print(f"Sample Size: {trajectory_result.sample_size}")
 
-    print(f"\n--- Attribution Analysis ---")
+    print("\n--- Attribution Analysis ---")
     print(f"Delta: {trajectory_result.failure_rate - single_result.failure_rate:+.1%}")
     print(f"Attribution to Agentic Dynamics: {attribution.get('attribution_to_agentic', 0):.1%}")
     print(f"Interpretation: {attribution.get('interpretation', 'N/A')}")

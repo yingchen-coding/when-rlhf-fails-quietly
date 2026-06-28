@@ -10,8 +10,7 @@ These metrics go beyond standard accuracy/safety to measure:
 
 import re
 from dataclasses import dataclass
-from typing import Any, Optional
-import json
+from typing import Any
 
 
 @dataclass

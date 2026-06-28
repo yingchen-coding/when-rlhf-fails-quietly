@@ -12,7 +12,6 @@ Method:
 3. Same scenario, different agent architectures
 """
 
-import json
 from dataclasses import dataclass
 from typing import List, Dict, Optional
 from enum import Enum

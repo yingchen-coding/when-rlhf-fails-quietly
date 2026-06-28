@@ -15,7 +15,6 @@ Usage:
 
 import argparse
 import json
-import os
 import subprocess
 import sys
 from datetime import datetime
@@ -26,8 +25,8 @@ from dataclasses import dataclass
 # Add parent to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from scenarios import get_scenario, list_scenarios, ScenarioResult
-from scenarios.base import Severity, Turn, Prompt
+from scenarios import get_scenario, list_scenarios
+from scenarios.base import Turn
 
 
 class ModelBackend(Protocol):
