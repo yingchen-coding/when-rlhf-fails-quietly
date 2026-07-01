@@ -447,7 +447,7 @@ If you reference this work in research or evaluation pipelines:
 ## Contact
 
 Ying Chen, Ph.D.
-CONTACT_PLACEHOLDER
+blueoceanally@gmail.com
 
 LinkedIn: https://www.linkedin.com/in/ying-chen-8b25a730/
 
