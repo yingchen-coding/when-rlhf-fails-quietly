@@ -3,5 +3,3 @@
 __pycache__/
 .ipynb_checkpoints/
 .claude/
-
-scripts/pr_review_check.sh
